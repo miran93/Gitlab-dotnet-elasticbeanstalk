@@ -1,0 +1,11 @@
+E:\dotnet\dotnet-core-tutorial\bin\Debug\netcoreapp2.2\dotnet-core-tutorial.deps.json
+E:\dotnet\dotnet-core-tutorial\bin\Debug\netcoreapp2.2\dotnet-core-tutorial.runtimeconfig.json
+E:\dotnet\dotnet-core-tutorial\bin\Debug\netcoreapp2.2\dotnet-core-tutorial.runtimeconfig.dev.json
+E:\dotnet\dotnet-core-tutorial\bin\Debug\netcoreapp2.2\dotnet-core-tutorial.dll
+E:\dotnet\dotnet-core-tutorial\bin\Debug\netcoreapp2.2\dotnet-core-tutorial.pdb
+E:\dotnet\dotnet-core-tutorial\obj\Debug\netcoreapp2.2\dotnet-core-tutorial.csprojAssemblyReference.cache
+E:\dotnet\dotnet-core-tutorial\obj\Debug\netcoreapp2.2\dotnet-core-tutorial.csproj.CoreCompileInputs.cache
+E:\dotnet\dotnet-core-tutorial\obj\Debug\netcoreapp2.2\dotnet-core-tutorial.AssemblyInfoInputs.cache
+E:\dotnet\dotnet-core-tutorial\obj\Debug\netcoreapp2.2\dotnet-core-tutorial.AssemblyInfo.cs
+E:\dotnet\dotnet-core-tutorial\obj\Debug\netcoreapp2.2\dotnet-core-tutorial.dll
+E:\dotnet\dotnet-core-tutorial\obj\Debug\netcoreapp2.2\dotnet-core-tutorial.pdb
