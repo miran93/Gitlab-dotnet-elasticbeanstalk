@@ -35,4 +35,3 @@ deploy:
     - ssh -i ~/.ssh/id_rsa $EC2_INSTANCE_USER@$EC2_INSTANCE_IP "sudo systemctl stop $SERVICE_NAME"
     - ssh -i ~/.ssh/id_rsa $EC2_INSTANCE_USER@$EC2_INSTANCE_IP "sudo rm -rf $EC2_INSTANCE_PATH/*"
     - ssh -i ~/.ssh/id_rsa $EC2_INSTANCE_USER@$EC2_INSTANCE_IP "sudo unzip $EC2_INSTANCE_PATH/$ARTIFACT_NAME -d $EC2_INSTANCE_PATH"
-    - ssh -i ~/.ssh/id_rsa $EC2_INSTANCE_USER@$EC2_INSTANCE_IP "sudo systemctl start $SERVICE_NAME"
