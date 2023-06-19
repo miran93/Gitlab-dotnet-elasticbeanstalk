@@ -15,8 +15,8 @@ build:
     - dotnet build --configuration Release
     - dotnet publish --configuration Release --output ./publish
 
-artifacts:
-  paths:
+  artifacts:
+   paths:
     - ./publish
 
 deploy:
