@@ -32,6 +32,5 @@ deploy:
     - echo "$AWS_SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
     - scp -i ~/.ssh/id_rsa -r ./publish/* $EC2_INSTANCE_USER@$EC2_INSTANCE_IP:$EC2_INSTANCE_PATH
-    - ssh -i ~/.ssh/id_rsa $EC2_INSTANCE_USER@$EC2_INSTANCE_IP "sudo systemctl stop $SERVICE_NAME"
     - ssh -i ~/.ssh/id_rsa $EC2_INSTANCE_USER@$EC2_INSTANCE_IP "sudo rm -rf $EC2_INSTANCE_PATH/*"
     - ssh -i ~/.ssh/id_rsa $EC2_INSTANCE_USER@$EC2_INSTANCE_IP "sudo unzip $EC2_INSTANCE_PATH/$ARTIFACT_NAME -d $EC2_INSTANCE_PATH"
