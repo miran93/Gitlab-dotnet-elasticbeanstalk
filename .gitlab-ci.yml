@@ -1,0 +1,36 @@
+stages:
+  - build
+  - deploy
+
+variables:
+  DOTNET_VERSION: "5.0"
+  ARTIFACT_NAME: "sample_app.zip"
+  SERVICE_NAME: "my_app.service"
+
+build:
+  stage: build
+  image: mcr.microsoft.com/dotnet/sdk:${DOTNET_VERSION}
+  script:
+    - dotnet restore
+    - dotnet build --configuration Release
+    - dotnet publish --configuration Release --output ./publish
+
+artifacts:
+  paths:
+    - ./publish
+
+deploy:
+  stage: deploy
+  image: python:3
+  before_script:
+    - apt-get update
+    - apt-get install -y openssh-client
+  script:
+    - ssh-keyscan -H $EC2_INSTANCE_IP >> ~/.ssh/known_hosts
+    - echo "$AWS_SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - scp -i ~/.ssh/id_rsa -r ./publish/* $EC2_INSTANCE_USER@$EC2_INSTANCE_IP:$EC2_INSTANCE_PATH
+    - ssh -i ~/.ssh/id_rsa $EC2_INSTANCE_USER@$EC2_INSTANCE_IP "sudo systemctl stop $SERVICE_NAME"
+    - ssh -i ~/.ssh/id_rsa $EC2_INSTANCE_USER@$EC2_INSTANCE_IP "sudo rm -rf $EC2_INSTANCE_PATH/*"
+    - ssh -i ~/.ssh/id_rsa $EC2_INSTANCE_USER@$EC2_INSTANCE_IP "sudo unzip $EC2_INSTANCE_PATH/$ARTIFACT_NAME -d $EC2_INSTANCE_PATH"
+    - ssh -i ~/.ssh/id_rsa $EC2_INSTANCE_USER@$EC2_INSTANCE_IP "sudo systemctl start $SERVICE_NAME"
