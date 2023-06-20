@@ -31,6 +31,6 @@ deploy:
     - ssh-keyscan -H $EC2_INSTANCE_IP >> ~/.ssh/known_hosts
     - echo "$AWS_SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
-    - scp -i ~/.ssh/id_rsa -r $CI_PROJECT_NAME.zip $EC2_INSTANCE_USER@$EC2_INSTANCE_IP:$EC2_INSTANCE_PATH
+    - scp -i ~/.ssh/id_rsa -r build:archive $EC2_INSTANCE_USER@$EC2_INSTANCE_IP:$EC2_INSTANCE_PATH
     - ssh -i ~/.ssh/id_rsa $EC2_INSTANCE_USER@$EC2_INSTANCE_IP "sudo rm -rf $EC2_INSTANCE_PATH/*"
     - ssh -i ~/.ssh/id_rsa $EC2_INSTANCE_USER@$EC2_INSTANCE_IP "sudo unzip $EC2_INSTANCE_PATH $CI_PROJECT_NAME.zip -d $EC2_INSTANCE_PATH"
