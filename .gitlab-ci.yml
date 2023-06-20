@@ -34,4 +34,3 @@ deploy:
     - scp -i ~/.ssh/id_rsa -r ./publish/* $EC2_INSTANCE_USER@$EC2_INSTANCE_IP:$EC2_INSTANCE_PATH
     - ssh -i ~/.ssh/id_rsa $EC2_INSTANCE_USER@$EC2_INSTANCE_IP "sudo rm -rf $EC2_INSTANCE_PATH/*"
     - ssh -i ~/.ssh/id_rsa $EC2_INSTANCE_USER@$EC2_INSTANCE_IP "ls -l $EC2_INSTANCE_PATH"
-    - ssh -i ~/.ssh/id_rsa $EC2_INSTANCE_USER@$EC2_INSTANCE_IP "sudo unzip $EC2_INSTANCE_PATH/$ARTIFACT_NAME -d $EC2_INSTANCE_PATH"
