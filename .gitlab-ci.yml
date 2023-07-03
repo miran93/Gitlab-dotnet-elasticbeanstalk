@@ -11,17 +11,19 @@ build:
     - dotnet build --configuration Release
   artifacts:
     paths:
-      - MyDotNetApp/bin/Release/net5.0/publish/
+      - MyDotNetApp/bin/Release/net5.0/
 
 artifact:
   stage: artifact
   image: alpine:latest
   script:
-    - cd MyDotNetApp/bin/Release/net5.0/publish/
-    - tar czf app.tar.gz *
+    - ls -R MyDotNetApp
+    - cd MyDotNetApp/bin/Release/net5.0/
+    - ls
+    - tar czf app.tar.gz publish/
   artifacts:
     paths:
-      - MyDotNetApp/bin/Release/net5.0/publish/app.tar.gz
+      - MyDotNetApp/bin/Release/net5.0/app.tar.gz
 
 deploy:
   stage: deploy
