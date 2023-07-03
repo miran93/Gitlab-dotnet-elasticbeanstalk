@@ -1,36 +1,35 @@
 stages:
   - build
+  - artifact
   - deploy
-
-variables:
-  DOTNET_VERSION: "5.0"
-  ARTIFACT_NAME: "sample_app.zip"
-  SERVICE_NAME: "my_app.service"
 
 build:
   stage: build
-  image: mcr.microsoft.com/dotnet/sdk:${DOTNET_VERSION}
+  image: mcr.microsoft.com/dotnet/sdk:latest
   script:
     - dotnet restore
     - dotnet build --configuration Release
-    - dotnet publish --configuration Release --output ./publish
-
   artifacts:
-   paths:
-    - ./publish
+    paths:
+      - MyDotNetApp/bin/Release/net5.0/publish/
+
+artifact:
+  stage: artifact
+  image: alpine:latest
+  script:
+    - cd MyDotNetApp/bin/Release/net5.0/publish/
+    - tar czf app.tar.gz *
+  artifacts:
+    paths:
+      - MyDotNetApp/bin/Release/net5.0/publish/app.tar.gz
 
 deploy:
   stage: deploy
-  image: python:3
-  before_script:
-    - apt-get update
-    - apt-get install -y openssh-client
+  image: amazon/aws-cli:latest
   script:
-    - mkdir -p ~/.ssh
-    - touch ~/.ssh/known_hosts
-    - ssh-keyscan -H $EC2_INSTANCE_IP >> ~/.ssh/known_hosts
-    - echo "$AWS_SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-    - chmod 600 ~/.ssh/id_rsa
-    - scp -i ~/.ssh/id_rsa -r ./publish/* $EC2_INSTANCE_USER@$EC2_INSTANCE_IP:$EC2_INSTANCE_PATH
-    - ssh -i ~/.ssh/id_rsa $EC2_INSTANCE_USER@$EC2_INSTANCE_IP "sudo rm -rf $EC2_INSTANCE_PATH/*"
-    - ssh -i ~/.ssh/id_rsa $EC2_INSTANCE_USER@$EC2_INSTANCE_IP "ls -l $EC2_INSTANCE_PATH"
+    - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+    - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+    - aws configure set default.region $AWS_REGION
+    - aws configure set default.output json
+    - aws elasticbeanstalk create-application-version --application-name dotnet-app --version-label $CI_COMMIT_REF_NAME --source-bundle S3Bucket=$AWS_S3_BUCKET,S3Key=MyDotNetApp/bin/Release/net5.0/publish/app.tar.gz
+    - aws elasticbeanstalk update-environment --environment-name Dotnet-app-env --version-label $CI_COMMIT_REF_NAME
