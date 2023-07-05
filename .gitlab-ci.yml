@@ -27,15 +27,15 @@ artifact:
 
 deploy:
   stage: deploy
-  image: mcr.microsoft.com/dotnet/sdk:latest
+  image: python:latest
   script:
-    - apt-get update && apt-get install -y unzip
-    - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-    - unzip awscliv2.zip
-    - ./aws/install --install-dir /usr/local/aws-cli --bin-dir /usr/local/bin
-    - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
-    - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-    - aws configure set default.region $AWS_REGION
-    - aws configure set default.output json
-    - aws elasticbeanstalk create-application-version --application-name dotnet-app --version-label $CI_COMMIT_REF_NAME --source-bundle S3Bucket=$AWS_S3_BUCKET,S3Key=MyDotNetApp/bin/Release/net5.0/app.tar.gz
-    - aws elasticbeanstalk update-environment --environment-name Dotnet-app-env --version-label $CI_COMMIT_REF_NAME
+    - apt-get update -qq && apt-get install -y -qq python3-pip
+    - pip3 install --upgrade awscli
+    - pip3 install --upgrade awsebcli
+    - echo "DEPLOYMENT_ENV=production" >> .env
+    - echo "AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID" >> .env
+    - echo "AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY" >> .env
+    - echo "AWS_REGION=us-east-1" >> .env
+    - eb init -r us-east-1 -p "IIS 10.0 running on 64bit Windows Server 2019/2.11.5" Dotnet-app-env
+    - eb deploy
+
