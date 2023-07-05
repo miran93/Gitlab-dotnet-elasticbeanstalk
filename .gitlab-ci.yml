@@ -36,6 +36,6 @@ deploy:
     - echo "AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID" >> .env
     - echo "AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY" >> .env
     - echo "AWS_REGION=us-east-1" >> .env
-    - eb init -r us-east-1 -p "IIS 10.0 running on 64bit Windows Server 2019/2.11.5" Dotnet-app-env
+    - eb init -r us-east-1 -p "IIS 10.0" Dotnet-app-env
     - eb deploy
 
